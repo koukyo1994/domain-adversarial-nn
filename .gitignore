@@ -130,3 +130,9 @@ dmypy.json
 
 # editor
 .vscode
+
+# data
+*.png
+*.parquet
+*.csv
+input/digits/*

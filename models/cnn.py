@@ -62,15 +62,16 @@ class DomainAdversarialCNN(nn.Module):
         class DANNLoss(nn.Module):
             def __init__(self):
                 super().__init__()
-                self.criterion = nn.BCEWithLogitsLoss()
+                self.loss_classifier = nn.CrossEntropyLoss()
+                self.loss_domain = nn.BCEWithLogitsLoss()
 
             def forward(self, x, y, target, domain_target):
                 source_preds = x[domain_target == 0]
                 source_target = target[domain_target == 0]
 
-                source_classification_loss = self.criterion(
+                source_classification_loss = self.loss_classifier(
                     source_preds, source_target)
 
-                domain_classification_loss = self.criterion(y, domain_target)
+                domain_classification_loss = self.loss_domain(y, domain_target)
                 return source_classification_loss + domain_classification_loss
         return DANNLoss()
