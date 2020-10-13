@@ -136,3 +136,5 @@ dmypy.json
 *.parquet
 *.csv
 input/digits/*
+*.pth
+*.pt

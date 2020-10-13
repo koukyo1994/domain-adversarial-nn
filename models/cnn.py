@@ -72,6 +72,6 @@ class DomainAdversarialCNN(nn.Module):
                 source_classification_loss = self.loss_classifier(
                     source_preds, source_target)
 
-                domain_classification_loss = self.loss_domain(y, domain_target)
+                domain_classification_loss = self.loss_domain(y.view(-1), domain_target.float())
                 return source_classification_loss + domain_classification_loss
         return DANNLoss()
