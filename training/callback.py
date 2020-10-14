@@ -23,6 +23,67 @@ def get_callbacks(config: dict):
         return callbacks
 
 
+def matthews_correlation(y_true: np.ndarray, y_pred: np.ndarray):
+    y_pred_pos = (y_pred > 0.5).astype(float)
+    y_pred_neg = 1 - y_pred_pos
+
+    y_pos = (y_true > 0.5).astype(float)
+    y_neg = 1 - y_pos
+
+    tp = (y_pos * y_pred_pos).sum()
+    tn = (y_neg * y_pred_neg).sum()
+
+    fp = (y_neg * y_pred_pos).sum()
+    fn = (y_pos * y_pred_neg).sum()
+
+    numerator = (tp * tn - fp * fn)
+    denominator = np.sqrt((tp + fp) * (tp + fn) * (tn + fp) * (tn + fn))
+    return numerator / (denominator + 1e-8)
+
+
+class MatthewsCorrelationCoeficient(Callback):
+    def __init__(self, output_key="logits", prefix="mcc"):
+        super().__init__(order=CallbackOrder.Metric)
+        self.output_key = output_key
+        self.prefix = prefix
+
+    def on_loader_start(self, state: State):
+        self.prediction: List[np.ndarray] = []
+        self.target: List[np.ndarray] = []
+
+    def on_batch_end(self, state: State):
+        targ = state.input[1].detach().cpu().numpy()
+        domain_targ = state.input[2].detach().cpu().numpy()
+
+        out = state.output[self.output_key]
+
+        classification_result = torch.sigmoid(
+            out["logits"].detach()).cpu().numpy()
+        domain_0_pred = classification_result[domain_targ == 0]
+        domain_0_targ = targ[domain_targ == 0]
+
+        self.prediction.append(domain_0_pred)
+        self.targets.append(domain_0_targ)
+
+        score = matthews_correlation(
+            y_true=domain_0_targ,
+            y_pred=domain_0_pred)
+        state.batch_metrics[self.prefix] = score
+
+    def on_loader_end(self, state: State):
+        prediction = np.concatenate(self.prediction, axis=0)
+        target = np.concatenate(self.target, axis=0)
+        score = matthews_correlation(
+            y_true=prediction,
+            y_pred=target)
+        state.loader_metrics[self.prefix] = score
+        if state.is_valid_loader:
+            state.epoch_metrics[state.valid_loader + "_epoch_" +
+                                self.prefix] = score
+        else:
+            state.epoch_metrics["train_epoch_" + self.prefix] = score
+
+
 class DANNClassificationAccuracy(Callback):
     def __init__(self, output_key="logits",
                  prefixes={0: "source_acc", 1: "target_acc"}):

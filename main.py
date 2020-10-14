@@ -29,6 +29,9 @@ if __name__ == "__main__":
     if config["datasets"]["name"] == "digits":
         train_dataset = datasets.DigitsDataset(mode="train")
         valid_dataset = datasets.DigitsDataset(mode="test")
+    elif config["datasets"]["name"] == "vsb":
+        train_dataset = datasets.VSBDataset(mode="train")  # type: ignore
+        valid_dataset = datasets.VSBDataset(mode="valid")  # type: ignore
     else:
         raise NotImplementedError
 
@@ -40,6 +43,9 @@ if __name__ == "__main__":
 
     if config["model"]["name"] == "cnn":
         model = models.DomainAdversarialCNN()
+        criterion = model.get_loss_fn()
+    elif config["model"]["name"] == "rnn":
+        model = models.DomainAdversarialLSTM(input_shape=train_dataset.X.shape)  # type: ignore
         criterion = model.get_loss_fn()
     else:
         raise NotImplementedError

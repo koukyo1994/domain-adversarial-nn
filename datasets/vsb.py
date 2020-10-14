@@ -4,6 +4,7 @@ import torch.utils.data as torchdata
 
 from pathlib import Path
 
+from sklearn.model_selection import StratifiedKFold
 from tqdm import tqdm
 
 
@@ -155,3 +156,58 @@ def load_or_calculate_test():
         print("Load test features")
         X_test = np.load(test_feature)
     return X_test
+
+
+class VSBDataset(torchdata.Dataset):
+    __MODES__ = ["train", "valid"]
+
+    def __init__(self, mode="train"):
+        assert mode in self.__MODES__, \
+            "`mode` should be either 'train' or 'valid'"
+
+        self.mode = mode
+        X, y = load_or_calculate_train()
+        self.X_test = load_or_calculate_test()
+
+        trn_idx, val_idx = list(
+            StratifiedKFold(
+                n_splits=5,
+                shuffle=True,
+                random_state=2019).split(X, y)
+        )[0]
+        if mode == "train":
+            self.X = X[trn_idx]
+            self.y = y[trn_idx]
+        else:
+            self.X = X[val_idx]
+            self.y = y[val_idx]
+
+        master_df = pd.DataFrame(columns=["idx", "source"])
+        master_df["idx"] = list(range(len(self.X)))
+        master_df["source"] = "train"
+
+        test_master_df = pd.DataFrame(columns=["idx", "source"])
+        test_master_df["idx"] = list(range(len(self.X_test)))
+        test_master_df["source"] = "test"
+
+        master_df = pd.concat(
+            [master_df, test_master_df],
+            axis=0,
+            sort=False).reset_index(drop=True)
+        self.master_df = master_df.sample(frac=1).reset_index(drop=True)
+
+    def __len__(self):
+        return len(self.master_df)
+
+    def __getitem__(self, idx: int):
+        sample = self.master_df.loc[idx]
+        domain_idx = sample["idx"]
+        if sample.source == "train":
+            x = self.X[domain_idx].astype(np.float32)
+            y = self.y[domain_idx]
+            domain_label = 0
+        else:
+            x = self.X_test[domain_idx].astype(np.float32)
+            y = -1
+            domain_label = 1
+        return x, y, domain_label
