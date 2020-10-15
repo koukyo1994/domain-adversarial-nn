@@ -158,10 +158,21 @@ def load_or_calculate_test():
     return X_test
 
 
+class VSBTestDataset(torchdata.Dataset):
+    def __init__(self):
+        self.X_test = load_or_calculate_test()
+
+    def __len__(self):
+        return len(self.X_test)
+
+    def __getitem__(self, index: int):
+        return self.X_test[index]
+
+
 class VSBDataset(torchdata.Dataset):
     __MODES__ = ["train", "valid"]
 
-    def __init__(self, mode="train"):
+    def __init__(self, mode="train", fold=0):
         assert mode in self.__MODES__, \
             "`mode` should be either 'train' or 'valid'"
 
@@ -174,7 +185,7 @@ class VSBDataset(torchdata.Dataset):
                 n_splits=5,
                 shuffle=True,
                 random_state=2019).split(X, y)
-        )[0]
+        )[fold]
         if mode == "train":
             self.X = X[trn_idx]
             self.y = y[trn_idx]
@@ -189,12 +200,17 @@ class VSBDataset(torchdata.Dataset):
         test_master_df = pd.DataFrame(columns=["idx", "source"])
         test_master_df["idx"] = list(range(len(self.X_test)))
         test_master_df["source"] = "test"
+        test_master_df = test_master_df.sample(
+            n=len(master_df),
+            replace=False,
+            random_state=2019 + fold).reset_index(drop=True)
 
         master_df = pd.concat(
             [master_df, test_master_df],
             axis=0,
             sort=False).reset_index(drop=True)
-        self.master_df = master_df.sample(frac=1).reset_index(drop=True)
+        self.master_df = master_df.sample(
+            frac=1, random_state=2019 + fold).reset_index(drop=True)
 
     def __len__(self):
         return len(self.master_df)

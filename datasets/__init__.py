@@ -1,2 +1,2 @@
 from .digits import DigitsDataset
-from .vsb import VSBDataset
+from .vsb import VSBDataset, VSBTestDataset
