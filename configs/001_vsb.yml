@@ -3,7 +3,7 @@ globals:
   device: cuda
   output_dir: output
   num_epochs: 50
-  main_metric: epoch_mcc
+  main_metric: epoch_balanced_mcc
   minimize_metric: False
 
 datasets:
@@ -41,3 +41,8 @@ callbacks:
     params:
       output_key: logits
       prefix: domain_auc
+
+  - name: AUCBalancedMCC
+    params:
+      output_key: logits
+      prefix: balanced_mcc

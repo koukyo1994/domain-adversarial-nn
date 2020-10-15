@@ -166,7 +166,7 @@ class VSBTestDataset(torchdata.Dataset):
         return len(self.X_test)
 
     def __getitem__(self, index: int):
-        return self.X_test[index]
+        return self.X_test[index].astype(np.float32)
 
 
 class VSBDataset(torchdata.Dataset):

@@ -196,3 +196,65 @@ class DANNDomainAUC(Callback):
                                 self.prefix] = score
         else:
             state.epoch_metrics["train_epoch_" + self.prefix] = score
+
+
+class AUCBalancedMCC(Callback):
+    def __init__(self, output_key="logits",
+                 prefix="balanced_mcc"):
+        super().__init__(order=CallbackOrder.Metric)
+
+        self.output_key = output_key
+        self.prefix = prefix
+
+    def on_loader_start(self, state: State):
+        self.prediction: List[np.ndarray] = []
+        self.target: List[np.ndarray] = []
+        self.domain_prediction: List[np.ndarray] = []
+        self.domain_target: List[np.ndarray] = []
+
+    def on_batch_end(self, state: State):
+        domain_targ = state.input[2].detach().cpu().numpy()
+        targ = state.input[1].detach().cpu().numpy()
+        out = state.output[self.output_key]
+
+        domain_classification = torch.sigmoid(
+            out["domain_logits"].detach()).cpu().numpy()
+        classification_result = torch.sigmoid(
+            out["logits"].detach()).cpu().numpy()
+
+        domain_0_pred = classification_result[domain_targ == 0]
+        domain_0_targ = targ[domain_targ == 0]
+
+        self.prediction.append(domain_0_pred)
+        self.target.append(domain_0_targ)
+        self.domain_prediction.append(domain_classification)
+        self.domain_target.append(domain_targ)
+
+        mcc = matthews_correlation(
+            y_true=domain_0_targ.reshape(-1),
+            y_pred=domain_0_pred.reshape(-1))
+        auc = roc_auc_score(
+            y_true=domain_targ.reshape(-1),
+            y_score=domain_classification.reshape(-1))
+        score = mcc - np.abs(auc - 0.5)
+        state.batch_metrics[self.prefix] = score
+
+    def on_loader_end(self, state: State):
+        y_pred = np.concatenate(self.prediction, axis=0).reshape(-1)
+        y_true = np.concatenate(self.target, axis=0).reshape(-1)
+        y_domain_pred = np.concatenate(self.domain_prediction, axis=0).reshape(-1)
+        y_domain_true = np.concatenate(self.domain_target, axis=0).reshape(-1)
+
+        mcc = matthews_correlation(
+            y_true=y_true,
+            y_pred=y_pred)
+        auc = roc_auc_score(
+            y_true=y_domain_true,
+            y_score=y_domain_pred)
+        score = mcc - np.abs(auc - 0.5)
+        state.loader_metrics[self.prefix] = score
+        if state.is_valid_loader:
+            state.epoch_metrics[state.valid_loader + "_epoch_" +
+                                self.prefix] = score
+        else:
+            state.epoch_metrics["train_epoch_" + self.prefix] = score
