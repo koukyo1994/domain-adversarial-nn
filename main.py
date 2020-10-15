@@ -39,8 +39,8 @@ if __name__ == "__main__":
             train_dataset = datasets.DigitsDataset(mode="train")
             valid_dataset = datasets.DigitsDataset(mode="test")
         elif dataset_name == "vsb":
-            train_dataset = datasets.datasets.VSBDataset(mode="train", fold=fold)  # type: ignore
-            valid_dataset = datasets.datasets.VSBDataset(mode="valid", fold=fold)  # type: ignore
+            train_dataset = datasets.VSBDataset(mode="train", fold=fold)  # type: ignore
+            valid_dataset = datasets.VSBDataset(mode="valid", fold=fold)  # type: ignore
         else:
             raise NotImplementedError
 
