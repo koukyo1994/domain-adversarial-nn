@@ -78,24 +78,44 @@ if __name__ == "__main__":
             minimize_metric=global_params["minimize_metric"])
 
     if dataset_name == "vsb":
+        oofs = []
+        oof_labels = []
         predictions = []
         test_dataset = datasets.VSBTestDataset()
         test_loader = torch.utils.data.DataLoader(
             test_dataset, **config["loader"]["params"]["valid"])
         for fold in range(5):
+            oof_dataset = datasets.VSBTrainDataset(fold=fold)
+            oof_loader = torch.utils.data.DataLoader(
+                oof_dataset, **config["loader"]["params"]["valid"])
+
             weights = torch.load(output_dir / f"fold{fold}/checkpoints/best.pth")
             model.load_state_dict(weights["model_state_dict"])
             model.eval()
             preds = []
+            for batch, label in oof_loader:
+                batch = batch.to(device)
+                with torch.no_grad():
+                    output = model(batch, 1.0)
+                prediction = torch.sigmoid(output["logits"].detach()).cpu().numpy().reshape(-1)
+                oofs.append(prediction)
+                oof_labels.append(label.cpu().numpy().reshape(-1))
             for batch in test_loader:
                 batch = batch.to(device)
                 with torch.no_grad():
                     output = model(batch, 1.0)
-                prediction = torch.sigmoid(batch["logits"].detach()).cpu().numpy().reshape(-1)
+                prediction = torch.sigmoid(output["logits"].detach()).cpu().numpy().reshape(-1)
                 preds.append(prediction)
             predictions.append(np.concatenate(preds))
+
+        oof_prediction = np.concatenate(oofs)
+        oof_target = np.concatenate(oof_labels)
+
+        search_result = utils.threshold_search(oof_target, oof_prediction)
+        print(search_result)
+
         soft_prediction = np.mean(predictions, axis=0)
-        hard_prediction = (soft_prediction > 0.5).astype(int)
+        hard_prediction = (soft_prediction > search_result["threshold"]).astype(int)
         submission = pd.read_csv("input/vsb-power-line-fault-detection/sample_submission.csv")
         submission["target"] = hard_prediction
         submission.to_csv(output_dir / "submission.csv", index=False)

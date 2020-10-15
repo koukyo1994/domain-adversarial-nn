@@ -169,6 +169,27 @@ class VSBTestDataset(torchdata.Dataset):
         return self.X_test[index].astype(np.float32)
 
 
+class VSBTrainDataset(torchdata.Dataset):
+    def __init__(self, fold=0):
+        X, y = load_or_calculate_train()
+        _, val_idx = list(
+            StratifiedKFold(
+                n_splits=5,
+                shuffle=True,
+                random_state=2019).split(X, y)
+        )[fold]
+        self.X = X[val_idx]
+        self.y = y[val_idx]
+
+    def __len__(self):
+        return len(self.X)
+
+    def __getitem__(self, index: int):
+        x = self.X[index].astype(np.float32)
+        y = self.y[index]
+        return x, y
+
+
 class VSBDataset(torchdata.Dataset):
     __MODES__ = ["train", "valid"]
 
