@@ -38,6 +38,7 @@ def matthews_correlation(y_true: np.ndarray, y_pred: np.ndarray):
 
     numerator = (tp * tn - fp * fn)
     denominator = np.sqrt((tp + fp) * (tp + fn) * (tn + fp) * (tn + fn))
+
     return numerator / (denominator + 1e-8)
 
 
@@ -63,19 +64,19 @@ class MatthewsCorrelationCoeficient(Callback):
         domain_0_targ = targ[domain_targ == 0]
 
         self.prediction.append(domain_0_pred)
-        self.targets.append(domain_0_targ)
+        self.target.append(domain_0_targ)
 
         score = matthews_correlation(
-            y_true=domain_0_targ,
-            y_pred=domain_0_pred)
+            y_true=domain_0_targ.reshape(-1),
+            y_pred=domain_0_pred.reshape(-1))
         state.batch_metrics[self.prefix] = score
 
     def on_loader_end(self, state: State):
         prediction = np.concatenate(self.prediction, axis=0)
         target = np.concatenate(self.target, axis=0)
         score = matthews_correlation(
-            y_true=prediction,
-            y_pred=target)
+            y_true=prediction.reshape(-1),
+            y_pred=target.reshape(-1))
         state.loader_metrics[self.prefix] = score
         if state.is_valid_loader:
             state.epoch_metrics[state.valid_loader + "_epoch_" +

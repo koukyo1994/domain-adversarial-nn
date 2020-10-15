@@ -12,7 +12,7 @@ datasets:
 loader:
   params:
     train:
-      batch_size: 128
+      batch_size: 256
       shuffle: True
       num_workers: 8
     valid:
