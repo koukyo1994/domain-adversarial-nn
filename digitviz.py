@@ -95,7 +95,7 @@ def umap_plot(representations: np.ndarray, groups: np.ndarray, save_dir: Path, n
         group_mask = groups == group
         group_emb0 = emb0[group_mask]
         group_emb1 = emb1[group_mask]
-        ax.scatter(group_emb0, group_emb1, c=colors[i], label=str(group))
+        ax.scatter(group_emb0, group_emb1, c=colors[i], label=str(group), alpha=0.5)
 
     ax.legend(loc="upper left", bbox_to_anchor=(1, 1))
     plt.savefig(save_dir / name)
@@ -114,5 +114,6 @@ if __name__ == "__main__":
     representations, labels, domain_labels = get_representation(
         loader, model, device)
 
+    domain_labels = np.array(["mnist" if i == 0 else "mnistm" for i in domain_labels])
     umap_plot(representations, domain_labels, save_dir=SAVE_DIR, name="umap_domain.png")
     umap_plot(representations, labels, save_dir=SAVE_DIR, name="umap_classes.png")

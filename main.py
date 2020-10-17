@@ -64,18 +64,19 @@ if __name__ == "__main__":
         callbacks = training.get_callbacks(config)
 
         runner = training.DANNRunner()
-        runner.train(
-            model=model,
-            loaders=loaders,
-            criterion=criterion,
-            optimizer=optimizer,
-            scheduler=scheduler,
-            num_epochs=global_params["num_epochs"],
-            verbose=True,
-            logdir=output_dir / f"fold{fold}",
-            callbacks=callbacks,
-            main_metric=global_params["main_metric"],
-            minimize_metric=global_params["minimize_metric"])
+        if not args.skip:
+            runner.train(
+                model=model,
+                loaders=loaders,
+                criterion=criterion,
+                optimizer=optimizer,
+                scheduler=scheduler,
+                num_epochs=global_params["num_epochs"],
+                verbose=True,
+                logdir=output_dir / f"fold{fold}",
+                callbacks=callbacks,
+                main_metric=global_params["main_metric"],
+                minimize_metric=global_params["minimize_metric"])
 
     if dataset_name == "vsb":
         oofs = []
@@ -91,6 +92,7 @@ if __name__ == "__main__":
 
             weights = torch.load(output_dir / f"fold{fold}/checkpoints/best.pth")
             model.load_state_dict(weights["model_state_dict"])
+            model.to(device)
             model.eval()
             preds = []
             for batch, label in oof_loader:
@@ -106,7 +108,12 @@ if __name__ == "__main__":
                     output = model(batch, 1.0)
                 prediction = torch.sigmoid(output["logits"].detach()).cpu().numpy().reshape(-1)
                 preds.append(prediction)
-            predictions.append(np.concatenate(preds))
+            preds = np.concatenate(preds)
+            pred_3 = []
+            for pred_scalar in preds:
+                for i in range(3):
+                    pred_3.append(pred_scalar)
+            predictions.append(pred_3)
 
         oof_prediction = np.concatenate(oofs)
         oof_target = np.concatenate(oof_labels)
@@ -114,7 +121,7 @@ if __name__ == "__main__":
         search_result = utils.threshold_search(oof_target, oof_prediction)
         print(search_result)
 
-        soft_prediction = np.mean(predictions, axis=0)
+        soft_prediction = np.squeeze(np.mean(predictions, axis=0))
         hard_prediction = (soft_prediction > search_result["threshold"]).astype(int)
         submission = pd.read_csv("input/vsb-power-line-fault-detection/sample_submission.csv")
         submission["target"] = hard_prediction

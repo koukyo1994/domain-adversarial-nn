@@ -132,7 +132,6 @@ dmypy.json
 .vscode
 
 # data
-*.png
 *.parquet
 *.csv
 input/digits/*
