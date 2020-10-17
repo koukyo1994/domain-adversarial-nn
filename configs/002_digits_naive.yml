@@ -3,25 +3,25 @@ globals:
   device: cuda
   output_dir: output
   num_epochs: 50
-  main_metric: epoch_balanced_mcc
+  main_metric: epoch_source_acc
   minimize_metric: False
 
 datasets:
-  name: vsb
+  name: digits
 
 loader:
   params:
     train:
-      batch_size: 256
+      batch_size: 128
       shuffle: True
       num_workers: 8
     valid:
-      batch_size: 512
+      batch_size: 128
       shuffle: False
       num_workers: 8
 
 model:
-  name: rnn
+  name: naivecnn
 
 optimizer:
   name: Adam
@@ -31,20 +31,12 @@ optimizer:
 scheduler:
   name:
 
-runner: dann
+runner: naive
 
 callbacks:
-  - name: MatthewsCorrelationCoeficient
+  - name: DANNClassificationAccuracy
     params:
       output_key: logits
-      prefix: "mcc"
-
-  - name: DANNDomainAUC
-    params:
-      output_key: logits
-      prefix: domain_auc
-
-  - name: AUCBalancedMCC
-    params:
-      output_key: logits
-      prefix: balanced_mcc
+      prefixes:
+        0: source_acc
+        1: target_acc

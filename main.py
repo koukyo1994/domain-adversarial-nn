@@ -53,6 +53,9 @@ if __name__ == "__main__":
         if config["model"]["name"] == "cnn":
             model = models.DomainAdversarialCNN()
             criterion = model.get_loss_fn()
+        elif config["model"]["name"] == "naivecnn":
+            model = models.NaiveClassificationCNN()  # type: ignore
+            criterion = model.get_loss_fn()  # type: ignore
         elif config["model"]["name"] == "rnn":
             model = models.DomainAdversarialLSTM(input_shape=train_dataset.X.shape)  # type: ignore
             criterion = model.get_loss_fn()
@@ -63,7 +66,13 @@ if __name__ == "__main__":
         scheduler = training.get_scheduler(optimizer, config)
         callbacks = training.get_callbacks(config)
 
-        runner = training.DANNRunner()
+        if config["runner"] == "dann":
+            runner = training.DANNRunner()
+        elif config["runner"] == "naive":
+            runner = training.NaiveClassificationRunner()
+        else:
+            raise NotImplementedError
+
         if not args.skip:
             runner.train(
                 model=model,

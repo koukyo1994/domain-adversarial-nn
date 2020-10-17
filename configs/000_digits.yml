@@ -31,6 +31,8 @@ optimizer:
 scheduler:
   name:
 
+runner: dann
+
 callbacks:
   - name: DANNClassificationAccuracy
     params:

@@ -37,3 +37,30 @@ class DANNRunner(dl.Runner):
             loss.backward()
             self.optimizer.step()
             self.optimizer.zero_grad()
+
+
+class NaiveClassificationRunner(dl.Runner):
+    def predict_batch(self, batch, **kwargs):
+        return super().predict_batch(batch, **kwargs)
+
+    def _handle_batch(self, batch):
+        X, label, domain_label = batch
+        X = X.to(self.device)
+        label = label.to(self.device)
+        domain_label = domain_label.to(self.device)
+
+        preds = self.model(X)
+        loss = self.criterion(
+            preds["logits"],
+            label,
+            domain_label)
+
+        self.batch_metrics.update({"loss": loss})
+        self.output = {
+            "logits": preds
+        }
+
+        if self.is_train_loader:
+            loss.backward()
+            self.optimizer.step()
+            self.optimizer.zero_grad()

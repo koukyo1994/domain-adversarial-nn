@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.optim as optim
 
 from .callback import get_callbacks
-from .runner import DANNRunner
+from .runner import DANNRunner, NaiveClassificationRunner
 
 
 def get_device(device: str):
