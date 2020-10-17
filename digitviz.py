@@ -6,6 +6,7 @@ import umap
 
 import datasets
 import models
+import utils
 
 from pathlib import Path
 from PIL import Image
@@ -57,9 +58,9 @@ def load_dann_model_and_device():
 def load_naive_model_and_device():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     if not torch.cuda.is_available():
-        weights = torch.load("output/002_digits_naive/checkpoints/best.pth", map_location="cpu")
+        weights = torch.load("output/002_digits_naive/fold0/checkpoints/best.pth", map_location="cpu")
     else:
-        weights = torch.load("output/002_digits_naive/checkpoints/best.pth")
+        weights = torch.load("output/002_digits_naive/fold0/checkpoints/best.pth")
     model = models.NaiveClassificationCNN()
     model.load_state_dict(weights["model_state_dict"])
     model.to(device)
@@ -92,7 +93,7 @@ def umap_plot(representations: np.ndarray, groups: np.ndarray, save_dir: Path, n
         n_components=2,
         n_neighbors=5,
         random_state=42).fit(representations)
-    fig = plt.figure(figsize=(10, 10))
+    fig = plt.figure(figsize=(11, 11))
     ax = fig.add_subplot(111)
     ax.tick_params(labelbottom=False, labelleft=False, left=False, bottom=False)
 
@@ -111,12 +112,15 @@ def umap_plot(representations: np.ndarray, groups: np.ndarray, save_dir: Path, n
         ax.scatter(group_emb0, group_emb1, c=colors[i], label=str(group), alpha=0.5)
 
     ax.legend(loc="upper left", bbox_to_anchor=(1, 1))
+    plt.tight_layout()
     plt.savefig(save_dir / name)
 
 
 if __name__ == "__main__":
     SAVE_DIR = Path("assets/digits")
     SAVE_DIR.mkdir(parents=True, exist_ok=True)
+    
+    utils.set_seed(2019)
 
     dataset = datasets.DigitsDataset(mode="test")
     loader = torch.utils.data.DataLoader(dataset, batch_size=32)
