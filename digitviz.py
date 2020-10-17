@@ -41,13 +41,26 @@ def plot_mnist_and_mnistm(dataset, save_dir: Path):
     plt.savefig(save_dir / "mnist_and_mnistm.png")
 
 
-def load_model_and_device():
+def load_dann_model_and_device():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     if not torch.cuda.is_available():
         weights = torch.load("output/000_digits/checkpoints/best.pth", map_location="cpu")
     else:
         weights = torch.load("output/000_digits/checkpoints/best.pth")
     model = models.DomainAdversarialCNN()
+    model.load_state_dict(weights["model_state_dict"])
+    model.to(device)
+    model.eval()
+    return model, device
+
+
+def load_naive_model_and_device():
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    if not torch.cuda.is_available():
+        weights = torch.load("output/002_digits_naive/checkpoints/best.pth", map_location="cpu")
+    else:
+        weights = torch.load("output/002_digits_naive/checkpoints/best.pth")
+    model = models.NaiveClassificationCNN()
     model.load_state_dict(weights["model_state_dict"])
     model.to(device)
     model.eval()
@@ -110,10 +123,17 @@ if __name__ == "__main__":
 
     plot_mnist_and_mnistm(dataset, SAVE_DIR)
 
-    model, device = load_model_and_device()
+    model, device = load_dann_model_and_device()
     representations, labels, domain_labels = get_representation(
         loader, model, device)
 
     domain_labels = np.array(["mnist" if i == 0 else "mnistm" for i in domain_labels])
     umap_plot(representations, domain_labels, save_dir=SAVE_DIR, name="umap_domain.png")
     umap_plot(representations, labels, save_dir=SAVE_DIR, name="umap_classes.png")
+
+    naive_model, device = load_naive_model_and_device()
+    representations, labels, domain_labels = get_representation(
+        loader, naive_model, device)
+    domain_labels = np.array(["mnist" if i == 0 else "mnistm" for i in domain_labels])
+    umap_plot(representations, domain_labels, save_dir=SAVE_DIR, name="umap_domain_naive.png")
+    umap_plot(representations, labels, save_dir=SAVE_DIR, name="umap_classes_naive.png")
