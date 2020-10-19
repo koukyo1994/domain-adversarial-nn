@@ -23,7 +23,7 @@ loader:
 model:
   name: cnn
   params:
-    warmup: True
+    warmup: False
 
 optimizer:
   name: Adam

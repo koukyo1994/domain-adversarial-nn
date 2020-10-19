@@ -97,9 +97,10 @@ class TrainInTurnsDANNCNN(nn.Module):
 
 
 class DomainAdversarialCNN(nn.Module):
-    def __init__(self, img_size=32):
+    def __init__(self, img_size=32, warmup=True):
         super().__init__()
         self.img_size = img_size
+        self.warmup = warmup
         self.feature_extractor = nn.Sequential(
             nn.Conv2d(3, 64, kernel_size=5),
             nn.BatchNorm2d(64),
@@ -142,7 +143,10 @@ class DomainAdversarialCNN(nn.Module):
     def forward(self, x, alpha):
         batch_size = x.size(0)
         x = self.feature_extractor(x).view(batch_size, -1)
-        y = GradientReversalLayer.apply(x, alpha)
+        if self.warmup:
+            y = GradientReversalLayer.apply(x, alpha)
+        else:
+            y = GradientReversalLayer.apply(x, 1.0)
         x = self.classifier(x)
         y = self.domain_classifier(y)
         return {
