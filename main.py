@@ -51,7 +51,7 @@ if __name__ == "__main__":
         loaders = {"train": train_loader, "valid": valid_loader}
 
         if config["model"]["name"] == "cnn":
-            model = models.DomainAdversarialCNN()
+            model = models.DomainAdversarialCNN(**config["model"]["params"])
             criterion = model.get_loss_fn()
         elif config["model"]["name"] == "naivecnn":
             model = models.NaiveClassificationCNN()  # type: ignore
