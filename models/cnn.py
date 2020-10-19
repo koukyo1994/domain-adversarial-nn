@@ -1,7 +1,99 @@
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
 from .layer import GradientReversalLayer
+
+
+class TrainInTurnsDANNCNN(nn.Module):
+    def __init__(self, img_size=32):
+        super().__init__()
+        self.img_size = img_size
+        self.feature_extractor = nn.Sequential(
+            nn.Conv2d(3, 64, kernel_size=5),
+            nn.BatchNorm2d(64),
+            nn.ReLU(),
+            nn.Conv2d(64, 64, kernel_size=3, stride=2, padding=1),
+            nn.BatchNorm2d(64),
+            nn.ReLU(),
+            nn.Conv2d(64, 50, kernel_size=5),
+            nn.BatchNorm2d(50),
+            nn.Dropout2d(),
+            nn.Conv2d(50, 50, kernel_size=3, stride=2, padding=1),
+            nn.BatchNorm2d(50),
+            nn.ReLU()
+        )
+
+        in_features = self._get_in_features()
+        self.classifier = nn.Sequential(
+            nn.Linear(in_features, 100),
+            nn.BatchNorm1d(100),
+            nn.ReLU(),
+            nn.Dropout(0.2),
+            nn.Linear(100, 100),
+            nn.BatchNorm1d(100),
+            nn.ReLU(),
+            nn.Linear(100, 10)
+        )
+        self.domain_classifier = nn.Sequential(
+            nn.Linear(in_features, 100),
+            nn.BatchNorm1d(100),
+            nn.ReLU(),
+            nn.Linear(100, 1)
+        )
+
+    def _get_in_features(self):
+        in_channels = self.feature_extractor[0].in_channels
+        dummy = torch.ones((1, in_channels, self.img_size, self.img_size))
+        out = self.feature_extractor(dummy)
+        return out.size(1) * (out.size(2) ** 2)
+
+    def freeze_feature_extractor(self):
+        for param in self.feature_extractor.parameters():
+            param.requires_grad = False
+
+    def unfreeze_feature_extractor(self):
+        for param in self.feature_extractor.parameters():
+            param.requires_grad = True
+
+    def freeze_domain_classifier(self):
+        for param in self.domain_classifier.parameters():
+            param.requires_grad = False
+
+    def unfreeze_domain_classifier(self):
+        for param in self.domain_classifier.parameters():
+            param.requires_grad = True
+
+    def prepare_for_domain_classification(self):
+        self.freeze_feature_extractor()
+        self.unfreeze_domain_classifier()
+
+    def feedback_for_feature_extractor(self):
+        self.unfreeze_feature_extractor()
+        self.freeze_domain_classifier()
+
+    def classify_domain(self, x, alpha):
+        batch_size = x.size(0)
+        x = self.feature_extractor(x).view(batch_size, -1)
+        y = GradientReversalLayer.apply(x, alpha)
+        y = self.domain_classifier(y)
+        return y
+
+    def forward(self, x):
+        batch_size = x.size(0)
+        x = self.feature_extractor(x).view(batch_size, -1)
+        x = self.classifier(x)
+        return x
+
+    def classification_loss(self, x, target, domain_target):
+        source_preds = x[domain_target == 0]
+        source_target = target[domain_target == 0]
+
+        source_classification_loss = F.cross_entropy(source_preds, source_target)
+        return source_classification_loss
+
+    def domain_classification_loss(self, y, domain_target):
+        return F.binary_cross_entropy(y.view(-1), domain_target.float())
 
 
 class DomainAdversarialCNN(nn.Module):

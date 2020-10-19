@@ -119,7 +119,7 @@ def umap_plot(representations: np.ndarray, groups: np.ndarray, save_dir: Path, n
 if __name__ == "__main__":
     SAVE_DIR = Path("assets/digits")
     SAVE_DIR.mkdir(parents=True, exist_ok=True)
-    
+
     utils.set_seed(2019)
 
     dataset = datasets.DigitsDataset(mode="test")
