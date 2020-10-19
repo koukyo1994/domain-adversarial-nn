@@ -93,7 +93,7 @@ class TrainInTurnsDANNCNN(nn.Module):
         return source_classification_loss
 
     def domain_classification_loss(self, y, domain_target):
-        return F.binary_cross_entropy(y.view(-1), domain_target.float())
+        return F.binary_cross_entropy_with_logits(y.view(-1), domain_target.float())
 
 
 class DomainAdversarialCNN(nn.Module):

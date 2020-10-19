@@ -33,5 +33,5 @@ scheduler:
 
 training:
   domain_classification_steps: 100
-  n_steps_for_domain_classifier: 100
-  n_steps_for_feedback: 100
+  n_steps_for_domain_classifier: 10
+  n_steps_for_feedback: 10

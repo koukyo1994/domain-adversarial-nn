@@ -71,7 +71,7 @@ def train_one_epoch(loader,
             f"target acc: {target_accuracy_meter.val:.4f} target acc (avg): {target_accuracy_meter.avg:.4f}"
         tqdm_bar.set_description(description)
 
-        if step + 1 % domain_classification_steps == 0:
+        if (step + 1) % domain_classification_steps == 0:
             phase = {0: "train domain classifier", 1: "feedback for feature extractor"}
             for phase_id in phase:
                 print(f"{phase[phase_id]}")
@@ -144,7 +144,7 @@ if __name__ == "__main__":
     valid_loader = torch.utils.data.DataLoader(
         valid_dataset, **config["loader"]["params"]["valid"])
 
-    model = models.TrainInTurnsDANNCNN()
+    model = models.TrainInTurnsDANNCNN().to(device)
 
     optimizer = training.get_optimizer(model, config)
     scheduler = training.get_scheduler(optimizer, config)
