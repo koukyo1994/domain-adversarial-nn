@@ -113,7 +113,7 @@ class NaiveClassificationLSTM(nn.Module):
                 super().__init__()
                 self.loss = nn.BCEWithLogitsLoss()
 
-            def forward(self, x, y, target, domain_target):
+            def forward(self, x, target, domain_target):
                 source_preds = x[domain_target == 0]
                 source_target = target[domain_target == 0]
 
