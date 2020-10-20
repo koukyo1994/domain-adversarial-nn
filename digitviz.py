@@ -134,7 +134,7 @@ if __name__ == "__main__":
     domain_labels = np.array(["mnist" if i == 0 else "mnistm" for i in domain_labels])
     umap_plot(representations, domain_labels, save_dir=SAVE_DIR, name="umap_domain.png")
     umap_plot(representations, labels, save_dir=SAVE_DIR, name="umap_classes.png")
-    
+
     model, device = load_dann_model_and_device("output/003_digits_no_warmup/fold0/checkpoints/best.pth")
     representations, labels, domain_labels = get_representation(
         loader, model, device)
