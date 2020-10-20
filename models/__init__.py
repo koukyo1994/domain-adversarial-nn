@@ -1,2 +1,2 @@
-from .cnn import DomainAdversarialCNN, NaiveClassificationCNN, TrainInTurnsDANNCNN
-from .rnn import DomainAdversarialLSTM
+from .cnn import DomainAdversarialCNN, NaiveClassificationCNN
+from .rnn import DomainAdversarialLSTM, NaiveClassificationLSTM

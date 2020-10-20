@@ -50,15 +50,22 @@ if __name__ == "__main__":
             valid_dataset, **config["loader"]["params"]["valid"])
         loaders = {"train": train_loader, "valid": valid_loader}
 
+        model_params = config["model"].get("params", {})
         if config["model"]["name"] == "cnn":
-            model = models.DomainAdversarialCNN(**config["model"]["params"])
+            model = models.DomainAdversarialCNN(**model_params)
             criterion = model.get_loss_fn()
         elif config["model"]["name"] == "naivecnn":
-            model = models.NaiveClassificationCNN()  # type: ignore
+            model = models.NaiveClassificationCNN(**model_params)  # type: ignore
             criterion = model.get_loss_fn()  # type: ignore
         elif config["model"]["name"] == "rnn":
-            model = models.DomainAdversarialLSTM(input_shape=train_dataset.X.shape)  # type: ignore
+            model = models.DomainAdversarialLSTM(  # type: ignore
+                input_shape=train_dataset.X.shape,  # type: ignore
+                **model_params)
             criterion = model.get_loss_fn()
+        elif config["model"]["name"] == "naivernn":
+            model = models.NaiveClassificationLSTM(  # type: ignore
+                input_shape=train_dataset.X.shape,  # type: ignore
+                **model_params)
         else:
             raise NotImplementedError
 
