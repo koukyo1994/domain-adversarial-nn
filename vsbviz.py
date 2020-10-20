@@ -133,11 +133,11 @@ if __name__ == "__main__":
             oof_labels.append(label.cpu().numpy().reshape(-1))
 
             prediction_warmup = torch.sigmoid(
-                output_warmup["logits"].detach().cpu().numpy().reshape(-1))
+                output_warmup["logits"]).detach().cpu().numpy().reshape(-1)
             prediction_no_warmup = torch.sigmoid(
-                output_no_warmup["logits"].detach().cpu().numpy().reshape(-1))
+                output_no_warmup["logits"]).detach().cpu().numpy().reshape(-1)
             prediction_naive = torch.sigmoid(
-                output_naive["logits"].detach().cpu().numpy().reshape(-1))
+                output_naive["logits"]).detach().cpu().numpy().reshape(-1)
 
             oofs_dict["warmup"].append(prediction_warmup)
             oofs_dict["no_warmup"].append(prediction_no_warmup)
@@ -156,11 +156,11 @@ if __name__ == "__main__":
                 output_naive = model_naive(batch)
 
             prediction_warmup = torch.sigmoid(
-                output_warmup["logits"].detach().cpu().numpy().reshape(-1))
+                output_warmup["logits"]).detach().cpu().numpy().reshape(-1)
             prediction_no_warmup = torch.sigmoid(
-                output_no_warmup["logits"].detach().cpu().numpy().reshape(-1))
+                output_no_warmup["logits"]).detach().cpu().numpy().reshape(-1)
             prediction_naive = torch.sigmoid(
-                output_naive["logits"].detach().cpu().numpy().reshape(-1))
+                output_naive["logits"]).detach().cpu().numpy().reshape(-1)
 
             preds["warmup"].append(prediction_warmup)
             preds["no_warmup"].append(prediction_no_warmup)
@@ -224,11 +224,11 @@ if __name__ == "__main__":
 
     labels = np.concatenate(labels)
     domain_labels = np.concatenate(domain_labels)
-    domain_labels = np.array(["source" if i == 0 else "target"])
+    domain_labels = np.array(["source" if i == 0 else "target" for i in domain_labels])
     class_map = {0: "ok", 1: "ng", -1: "target"}
     labels = np.array(list(map(lambda x: class_map[x], labels.tolist())))  # type: ignore
 
     for key in representations_dict:
-        representations = np.concatenate(representations_dict[key])
+        representations = np.concatenate(representations_dict[key], axis=0)
         umap_plot(representations, domain_labels, save_dir=SAVE_DIR, name=f"umap_domain_{key}.png")
         umap_plot(representations, labels, save_dir=SAVE_DIR, name=f"umap_classes_{key}.png")

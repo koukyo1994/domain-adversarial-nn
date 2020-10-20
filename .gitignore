@@ -133,7 +133,7 @@ dmypy.json
 
 # data
 *.parquet
-*.csv
+input/vsb-power-line-fault-detection/*
 input/digits/*
 *.pth
 *.pt

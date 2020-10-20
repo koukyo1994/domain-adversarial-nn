@@ -98,7 +98,7 @@ class NaiveClassificationLSTM(nn.Module):
         x = self.relu(self.lin1(attn))
         return x
 
-    def forward(self, x, alpha):
+    def forward(self, x):
         batch_size = x.size(0)
 
         x = self.feature_extractor(x)
