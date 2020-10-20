@@ -87,7 +87,7 @@ class NaiveClassificationLSTM(nn.Module):
         self.relu = nn.ReLU()
         self.lin2 = nn.Linear(linear_size, 1)
 
-    def forward(self, x, alpha):
+    def forward(self, x):
         batch_size = x.size(0)
 
         h_lstm, _ = self.lstm1(x)
@@ -105,7 +105,7 @@ class NaiveClassificationLSTM(nn.Module):
                 super().__init__()
                 self.loss = nn.BCEWithLogitsLoss()
 
-            def forward(self, x, y, target, domain_target):
+            def forward(self, x, target, domain_target):
                 source_preds = x[domain_target == 0]
                 source_target = target[domain_target == 0]
 

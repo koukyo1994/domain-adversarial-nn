@@ -51,6 +51,8 @@ if __name__ == "__main__":
         loaders = {"train": train_loader, "valid": valid_loader}
 
         model_params = config["model"].get("params", {})
+        if model_params is None:
+            model_params = {}
         if config["model"]["name"] == "cnn":
             model = models.DomainAdversarialCNN(**model_params)
             criterion = model.get_loss_fn()
@@ -66,6 +68,7 @@ if __name__ == "__main__":
             model = models.NaiveClassificationLSTM(  # type: ignore
                 input_shape=train_dataset.X.shape,  # type: ignore
                 **model_params)
+            criterion = model.get_loss_fn()  # type: ignore
         else:
             raise NotImplementedError
 
