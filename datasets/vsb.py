@@ -170,13 +170,13 @@ class VSBTestDataset(torchdata.Dataset):
 
 
 class VSBTrainDataset(torchdata.Dataset):
-    def __init__(self, fold=0):
+    def __init__(self, fold=0, seed=1213):
         X, y = load_or_calculate_train()
         _, val_idx = list(
             StratifiedKFold(
                 n_splits=5,
                 shuffle=True,
-                random_state=2019).split(X, y)
+                random_state=seed).split(X, y)
         )[fold]
         self.X = X[val_idx]
         self.y = y[val_idx]
@@ -193,7 +193,7 @@ class VSBTrainDataset(torchdata.Dataset):
 class VSBDataset(torchdata.Dataset):
     __MODES__ = ["train", "valid"]
 
-    def __init__(self, mode="train", fold=0):
+    def __init__(self, mode="train", fold=0, seed=1213):
         assert mode in self.__MODES__, \
             "`mode` should be either 'train' or 'valid'"
 
@@ -205,7 +205,7 @@ class VSBDataset(torchdata.Dataset):
             StratifiedKFold(
                 n_splits=5,
                 shuffle=True,
-                random_state=2019).split(X, y)
+                random_state=seed).split(X, y)
         )[fold]
         if mode == "train":
             self.X = X[trn_idx]
@@ -224,14 +224,14 @@ class VSBDataset(torchdata.Dataset):
         test_master_df = test_master_df.sample(
             n=len(master_df),
             replace=False,
-            random_state=2019 + fold).reset_index(drop=True)
+            random_state=seed + fold).reset_index(drop=True)
 
         master_df = pd.concat(
             [master_df, test_master_df],
             axis=0,
             sort=False).reset_index(drop=True)
         self.master_df = master_df.sample(
-            frac=1, random_state=2019 + fold).reset_index(drop=True)
+            frac=1, random_state=seed + fold).reset_index(drop=True)
 
     def __len__(self):
         return len(self.master_df)

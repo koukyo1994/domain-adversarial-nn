@@ -21,6 +21,7 @@ if __name__ == "__main__":
     output_dir = Path(global_params["output_dir"])
     config_name = Path(args.config).name.replace(".yml", "")
     output_dir = output_dir / config_name
+    output_dir = output_dir / f"seed{global_params['seed']}"
     output_dir.mkdir(parents=True, exist_ok=True)
 
     utils.set_seed(global_params["seed"])
@@ -37,8 +38,8 @@ if __name__ == "__main__":
             train_dataset = datasets.DigitsDataset(mode="train")
             valid_dataset = datasets.DigitsDataset(mode="test")
         elif dataset_name == "vsb":
-            train_dataset = datasets.VSBDataset(mode="train", fold=fold)  # type: ignore
-            valid_dataset = datasets.VSBDataset(mode="valid", fold=fold)  # type: ignore
+            train_dataset = datasets.VSBDataset(mode="train", fold=fold, seed=global_params["seed"])  # type: ignore
+            valid_dataset = datasets.VSBDataset(mode="valid", fold=fold, seed=global_params["seed"])  # type: ignore
         else:
             raise NotImplementedError
 
