@@ -33,6 +33,9 @@ if __name__ == "__main__":
     device = training.get_device(global_params["device"])
 
     for seed in seeds:
+        if multirun:
+            print("*" * 100)
+            print(f"SEED: {seed}")
         utils.set_seed(seed)
 
         dataset_name = config["datasets"]["name"]
