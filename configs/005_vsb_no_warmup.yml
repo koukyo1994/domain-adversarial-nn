@@ -1,5 +1,5 @@
 globals:
-  seed: 0
+  seed: 1213
   device: cuda
   output_dir: output
   num_epochs: 50
