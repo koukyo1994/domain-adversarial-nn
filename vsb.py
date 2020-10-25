@@ -108,6 +108,8 @@ if __name__ == "__main__":
         else:
             EXPERIMENT_DIR = EXPERIMENT_BASE_DIR
 
+        utils.set_seed(seed)
+
         oof_labels = []
         oof_preds = []
         fold_test_predictions = []
