@@ -1,0 +1,41 @@
+globals:
+  seed: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+  device: cuda
+  output_dir: output
+  num_epochs: 50
+  main_metric: epoch_mcc
+  minimize_metric: False
+
+datasets:
+  name: vsb
+
+loader:
+  params:
+    train:
+      batch_size: 256
+      shuffle: True
+      num_workers: 8
+    valid:
+      batch_size: 512
+      shuffle: False
+      num_workers: 8
+
+model:
+  name: naivernn
+  params:
+
+optimizer:
+  name: Adam
+  params:
+    lr: 0.001
+
+scheduler:
+  name:
+
+runner: naive
+
+callbacks:
+  - name: MatthewsCorrelationCoeficient
+    params:
+      output_key: logits
+      prefix: "mcc"
