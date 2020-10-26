@@ -62,7 +62,7 @@ def prep_data(metadata: pd.DataFrame, start: int, end: int):
             signal_id, target = metadata.loc[id_measurement].loc[phase]
             if phase == 0:
                 y.append(target)
-            X_signal.append(transform_ts(parq_train[str(signal_id)]))
+            X_signal.append(transform_ts(parq_train[str(signal_id)], n_dim=250))
         X_signal = np.concatenate(X_signal, axis=1)
         X.append(X_signal)
     X = np.asarray(X)
@@ -107,7 +107,7 @@ def calc_test_features():
         for i in tqdm(subset_test.columns):
             id_measurement, phase = metadata.loc[int(i)]
             subset_test_col = subset_test[i]
-            subset_trans = transform_ts(subset_test_col)
+            subset_trans = transform_ts(subset_test_col, n_dim=250)
             X_test.append([i, id_measurement, phase, subset_trans])
     X_test_input = np.asarray([
         np.concatenate([
