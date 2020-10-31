@@ -22,7 +22,12 @@ class DomainAdversarialLSTM(nn.Module):
             int(hidden_size / 2) * 2, self.maxlen, n_attention, n_attention)
         self.lin1 = nn.Linear(int(hidden_size / 2) * 2, linear_size)
         self.relu = nn.ReLU()
-        self.lin2 = nn.Linear(linear_size, 1)
+        self.classifier = nn.Sequential(
+            nn.Linear(linear_size, 10),
+            nn.BatchNorm1d(10),
+            nn.ReLU(),
+            nn.Linear(10, 1)
+        )
 
         self.domain_classifier = nn.Sequential(
             nn.Linear(linear_size, 10),
@@ -45,7 +50,7 @@ class DomainAdversarialLSTM(nn.Module):
             y = GradientReversalLayer.apply(x, alpha)
         else:
             y = GradientReversalLayer.apply(x, 1.0)
-        x = self.lin2(x)
+        x = self.classifier(x)
         y = self.domain_classifier(y)
         return {
             "logits": x.view(batch_size, -1),
@@ -89,7 +94,12 @@ class NaiveClassificationLSTM(nn.Module):
             int(hidden_size / 2) * 2, self.maxlen, n_attention, n_attention)
         self.lin1 = nn.Linear(int(hidden_size / 2) * 2, linear_size)
         self.relu = nn.ReLU()
-        self.lin2 = nn.Linear(linear_size, 1)
+        self.classifier = nn.Sequential(
+            nn.Linear(linear_size, 10),
+            nn.BatchNorm1d(10),
+            nn.ReLU(),
+            nn.Linear(10, 1)
+        )
 
     def feature_extractor(self, x):
         h_lstm, _ = self.lstm1(x)
@@ -102,7 +112,7 @@ class NaiveClassificationLSTM(nn.Module):
         batch_size = x.size(0)
 
         x = self.feature_extractor(x)
-        x = self.lin2(x)
+        x = self.classifier(x)
         return {
             "logits": x.view(batch_size, -1)
         }
