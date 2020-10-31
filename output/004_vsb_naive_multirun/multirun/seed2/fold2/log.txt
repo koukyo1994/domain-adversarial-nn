@@ -148,3 +148,153 @@
 [2020-10-25 11:05:04,165] 
 50/50 * Epoch 50 (train): epoch_mcc=0.9404 | loss=0.0190 | mcc=0.9510
 50/50 * Epoch 50 (valid): epoch_mcc=0.6642 | loss=0.1870 | mcc=0.6625
+[2020-10-31 10:31:02,525] 
+1/50 * Epoch 1 (train): epoch_mcc=0.5358 | loss=0.4382 | mcc=0.5511
+1/50 * Epoch 1 (valid): epoch_mcc=0.6828 | loss=0.2737 | mcc=0.6847
+[2020-10-31 10:31:05,636] 
+2/50 * Epoch 2 (train): epoch_mcc=0.6489 | loss=0.3312 | mcc=0.6332
+2/50 * Epoch 2 (valid): epoch_mcc=0.7040 | loss=0.1627 | mcc=0.6974
+[2020-10-31 10:31:08,692] 
+3/50 * Epoch 3 (train): epoch_mcc=0.6805 | loss=0.2837 | mcc=0.6472
+3/50 * Epoch 3 (valid): epoch_mcc=0.6385 | loss=0.4064 | mcc=0.6388
+[2020-10-31 10:31:11,756] 
+4/50 * Epoch 4 (train): epoch_mcc=0.6886 | loss=0.2570 | mcc=0.6957
+4/50 * Epoch 4 (valid): epoch_mcc=0.4493 | loss=0.4231 | mcc=0.4614
+[2020-10-31 10:31:14,728] 
+5/50 * Epoch 5 (train): epoch_mcc=0.6342 | loss=0.2404 | mcc=0.6200
+5/50 * Epoch 5 (valid): epoch_mcc=0.6350 | loss=0.2158 | mcc=0.6031
+[2020-10-31 10:31:17,725] 
+6/50 * Epoch 6 (train): epoch_mcc=0.6232 | loss=0.2138 | mcc=0.6169
+6/50 * Epoch 6 (valid): epoch_mcc=0.5147 | loss=0.2038 | mcc=0.5129
+[2020-10-31 10:31:20,751] 
+7/50 * Epoch 7 (train): epoch_mcc=0.6810 | loss=0.2007 | mcc=0.6710
+7/50 * Epoch 7 (valid): epoch_mcc=0.6639 | loss=0.2169 | mcc=0.6556
+[2020-10-31 10:31:23,795] 
+8/50 * Epoch 8 (train): epoch_mcc=0.6992 | loss=0.1684 | mcc=0.6984
+8/50 * Epoch 8 (valid): epoch_mcc=0.6351 | loss=0.1420 | mcc=0.6242
+[2020-10-31 10:31:26,800] 
+9/50 * Epoch 9 (train): epoch_mcc=0.7463 | loss=0.1572 | mcc=0.7396
+9/50 * Epoch 9 (valid): epoch_mcc=0.7631 | loss=0.1409 | mcc=0.7586
+[2020-10-31 10:31:29,880] 
+10/50 * Epoch 10 (train): epoch_mcc=0.7889 | loss=0.1372 | mcc=0.7784
+10/50 * Epoch 10 (valid): epoch_mcc=0.6650 | loss=0.1782 | mcc=0.6678
+[2020-10-31 10:31:32,843] 
+11/50 * Epoch 11 (train): epoch_mcc=0.7620 | loss=0.1381 | mcc=0.7472
+11/50 * Epoch 11 (valid): epoch_mcc=0.6447 | loss=0.3141 | mcc=0.6494
+[2020-10-31 10:31:35,815] 
+12/50 * Epoch 12 (train): epoch_mcc=0.7647 | loss=0.1256 | mcc=0.7465
+12/50 * Epoch 12 (valid): epoch_mcc=0.5230 | loss=0.2593 | mcc=0.5348
+[2020-10-31 10:31:38,798] 
+13/50 * Epoch 13 (train): epoch_mcc=0.7628 | loss=0.1261 | mcc=0.7592
+13/50 * Epoch 13 (valid): epoch_mcc=0.5908 | loss=0.1189 | mcc=0.5997
+[2020-10-31 10:31:41,869] 
+14/50 * Epoch 14 (train): epoch_mcc=0.7341 | loss=0.1268 | mcc=0.7359
+14/50 * Epoch 14 (valid): epoch_mcc=0.6241 | loss=0.2827 | mcc=0.6274
+[2020-10-31 10:31:44,860] 
+15/50 * Epoch 15 (train): epoch_mcc=0.8081 | loss=0.1000 | mcc=0.8160
+15/50 * Epoch 15 (valid): epoch_mcc=0.7466 | loss=0.1279 | mcc=0.7431
+[2020-10-31 10:31:47,873] 
+16/50 * Epoch 16 (train): epoch_mcc=0.8326 | loss=0.0911 | mcc=0.8285
+16/50 * Epoch 16 (valid): epoch_mcc=0.5148 | loss=0.1511 | mcc=0.5140
+[2020-10-31 10:31:50,868] 
+17/50 * Epoch 17 (train): epoch_mcc=0.8239 | loss=0.0893 | mcc=0.8067
+17/50 * Epoch 17 (valid): epoch_mcc=0.6770 | loss=0.1518 | mcc=0.6667
+[2020-10-31 10:31:53,821] 
+18/50 * Epoch 18 (train): epoch_mcc=0.8361 | loss=0.0832 | mcc=0.7969
+18/50 * Epoch 18 (valid): epoch_mcc=0.7359 | loss=0.1123 | mcc=0.7303
+[2020-10-31 10:31:56,838] 
+19/50 * Epoch 19 (train): epoch_mcc=0.8275 | loss=0.0846 | mcc=0.8273
+19/50 * Epoch 19 (valid): epoch_mcc=0.7088 | loss=0.1101 | mcc=0.6983
+[2020-10-31 10:31:59,877] 
+20/50 * Epoch 20 (train): epoch_mcc=0.8078 | loss=0.0977 | mcc=0.7946
+20/50 * Epoch 20 (valid): epoch_mcc=0.7631 | loss=0.1750 | mcc=0.7564
+[2020-10-31 10:32:02,941] 
+21/50 * Epoch 21 (train): epoch_mcc=0.8002 | loss=0.0840 | mcc=0.7733
+21/50 * Epoch 21 (valid): epoch_mcc=0.7389 | loss=0.1230 | mcc=0.7387
+[2020-10-31 10:32:06,006] 
+22/50 * Epoch 22 (train): epoch_mcc=0.8224 | loss=0.0685 | mcc=0.8091
+22/50 * Epoch 22 (valid): epoch_mcc=0.7203 | loss=0.1196 | mcc=0.7251
+[2020-10-31 10:32:09,035] 
+23/50 * Epoch 23 (train): epoch_mcc=0.8747 | loss=0.0634 | mcc=0.8432
+23/50 * Epoch 23 (valid): epoch_mcc=0.7376 | loss=0.1743 | mcc=0.7375
+[2020-10-31 10:32:12,047] 
+24/50 * Epoch 24 (train): epoch_mcc=0.8212 | loss=0.0733 | mcc=0.8250
+24/50 * Epoch 24 (valid): epoch_mcc=0.7451 | loss=0.1117 | mcc=0.7362
+[2020-10-31 10:32:15,031] 
+25/50 * Epoch 25 (train): epoch_mcc=0.8116 | loss=0.0720 | mcc=0.8083
+25/50 * Epoch 25 (valid): epoch_mcc=0.6843 | loss=0.0996 | mcc=0.6707
+[2020-10-31 10:32:18,049] 
+26/50 * Epoch 26 (train): epoch_mcc=0.8239 | loss=0.0668 | mcc=0.8330
+26/50 * Epoch 26 (valid): epoch_mcc=0.7014 | loss=0.1102 | mcc=0.7027
+[2020-10-31 10:32:21,101] 
+27/50 * Epoch 27 (train): epoch_mcc=0.8785 | loss=0.0599 | mcc=0.8719
+27/50 * Epoch 27 (valid): epoch_mcc=0.6387 | loss=0.1205 | mcc=0.6079
+[2020-10-31 10:32:24,114] 
+28/50 * Epoch 28 (train): epoch_mcc=0.8984 | loss=0.0515 | mcc=0.8963
+28/50 * Epoch 28 (valid): epoch_mcc=0.6728 | loss=0.1442 | mcc=0.6688
+[2020-10-31 10:32:27,139] 
+29/50 * Epoch 29 (train): epoch_mcc=0.8063 | loss=0.0679 | mcc=0.8231
+29/50 * Epoch 29 (valid): epoch_mcc=0.6133 | loss=0.1350 | mcc=0.6178
+[2020-10-31 10:32:30,206] 
+30/50 * Epoch 30 (train): epoch_mcc=0.8352 | loss=0.0705 | mcc=0.8435
+30/50 * Epoch 30 (valid): epoch_mcc=0.5849 | loss=0.1286 | mcc=0.5872
+[2020-10-31 10:32:33,243] 
+31/50 * Epoch 31 (train): epoch_mcc=0.8057 | loss=0.0756 | mcc=0.7739
+31/50 * Epoch 31 (valid): epoch_mcc=0.5762 | loss=0.1887 | mcc=0.5771
+[2020-10-31 10:32:36,281] 
+32/50 * Epoch 32 (train): epoch_mcc=0.8001 | loss=0.0668 | mcc=0.8046
+32/50 * Epoch 32 (valid): epoch_mcc=0.6772 | loss=0.1293 | mcc=0.6671
+[2020-10-31 10:32:39,234] 
+33/50 * Epoch 33 (train): epoch_mcc=0.8604 | loss=0.0672 | mcc=0.8529
+33/50 * Epoch 33 (valid): epoch_mcc=0.6843 | loss=0.1304 | mcc=0.6844
+[2020-10-31 10:32:42,228] 
+34/50 * Epoch 34 (train): epoch_mcc=0.8440 | loss=0.0605 | mcc=0.7678
+34/50 * Epoch 34 (valid): epoch_mcc=0.6971 | loss=0.1211 | mcc=0.6872
+[2020-10-31 10:32:45,304] 
+35/50 * Epoch 35 (train): epoch_mcc=0.8483 | loss=0.0506 | mcc=0.8507
+35/50 * Epoch 35 (valid): epoch_mcc=0.7516 | loss=0.1093 | mcc=0.7528
+[2020-10-31 10:32:48,328] 
+36/50 * Epoch 36 (train): epoch_mcc=0.8909 | loss=0.0450 | mcc=0.8938
+36/50 * Epoch 36 (valid): epoch_mcc=0.4302 | loss=0.1628 | mcc=0.4334
+[2020-10-31 10:32:51,335] 
+37/50 * Epoch 37 (train): epoch_mcc=0.9151 | loss=0.0385 | mcc=0.9059
+37/50 * Epoch 37 (valid): epoch_mcc=0.5404 | loss=0.1623 | mcc=0.5372
+[2020-10-31 10:32:54,315] 
+38/50 * Epoch 38 (train): epoch_mcc=0.8713 | loss=0.0440 | mcc=0.8577
+38/50 * Epoch 38 (valid): epoch_mcc=0.7607 | loss=0.0937 | mcc=0.7473
+[2020-10-31 10:32:57,336] 
+39/50 * Epoch 39 (train): epoch_mcc=0.8617 | loss=0.0484 | mcc=0.8720
+39/50 * Epoch 39 (valid): epoch_mcc=0.7331 | loss=0.1019 | mcc=0.7367
+[2020-10-31 10:33:00,384] 
+40/50 * Epoch 40 (train): epoch_mcc=0.8789 | loss=0.0463 | mcc=0.8808
+40/50 * Epoch 40 (valid): epoch_mcc=0.5721 | loss=0.1694 | mcc=0.5831
+[2020-10-31 10:33:03,416] 
+41/50 * Epoch 41 (train): epoch_mcc=0.8243 | loss=0.0587 | mcc=0.8122
+41/50 * Epoch 41 (valid): epoch_mcc=0.6830 | loss=0.1765 | mcc=0.6808
+[2020-10-31 10:33:06,446] 
+42/50 * Epoch 42 (train): epoch_mcc=0.9080 | loss=0.0379 | mcc=0.8989
+42/50 * Epoch 42 (valid): epoch_mcc=0.7335 | loss=0.1247 | mcc=0.7333
+[2020-10-31 10:33:09,490] 
+43/50 * Epoch 43 (train): epoch_mcc=0.9189 | loss=0.0346 | mcc=0.9056
+43/50 * Epoch 43 (valid): epoch_mcc=0.5884 | loss=0.1580 | mcc=0.5773
+[2020-10-31 10:33:12,563] 
+44/50 * Epoch 44 (train): epoch_mcc=0.9035 | loss=0.0366 | mcc=0.8952
+44/50 * Epoch 44 (valid): epoch_mcc=0.7233 | loss=0.1084 | mcc=0.7149
+[2020-10-31 10:33:15,574] 
+45/50 * Epoch 45 (train): epoch_mcc=0.9309 | loss=0.0320 | mcc=0.9331
+45/50 * Epoch 45 (valid): epoch_mcc=0.7607 | loss=0.0938 | mcc=0.7436
+[2020-10-31 10:33:18,511] 
+46/50 * Epoch 46 (train): epoch_mcc=0.8047 | loss=0.0600 | mcc=0.7907
+46/50 * Epoch 46 (valid): epoch_mcc=0.6659 | loss=0.1511 | mcc=0.6754
+[2020-10-31 10:33:21,493] 
+47/50 * Epoch 47 (train): epoch_mcc=0.7387 | loss=0.0779 | mcc=0.7475
+47/50 * Epoch 47 (valid): epoch_mcc=0.4600 | loss=0.1612 | mcc=0.4703
+[2020-10-31 10:33:24,492] 
+48/50 * Epoch 48 (train): epoch_mcc=0.8304 | loss=0.0585 | mcc=0.8264
+48/50 * Epoch 48 (valid): epoch_mcc=0.7195 | loss=0.1081 | mcc=0.7140
+[2020-10-31 10:33:27,462] 
+49/50 * Epoch 49 (train): epoch_mcc=0.9030 | loss=0.0411 | mcc=0.9078
+49/50 * Epoch 49 (valid): epoch_mcc=0.6446 | loss=0.1405 | mcc=0.6450
+[2020-10-31 10:33:30,551] 
+50/50 * Epoch 50 (train): epoch_mcc=0.9228 | loss=0.0348 | mcc=0.9287
+50/50 * Epoch 50 (valid): epoch_mcc=0.7040 | loss=0.1042 | mcc=0.6985
